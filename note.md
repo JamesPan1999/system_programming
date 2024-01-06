@@ -251,7 +251,75 @@ linux下 umask 的默认值是0002        (0开头都是八进制)
 
 所以最后按照公式得到的结果权限就是664    
 
-umask越大，所创建的权限越小      umask用于权限控制   
+umask越大，所创建的权限越小      umask用于权限控制
+
+
+
+## fputc  fgetc
+
+```c   
+int fgetc(FILE *stream);     //函数
+int getc(FILE *stream);      //宏
+//将读到的unsigned char 类型转化为int类型来对待  防止出错（ 失败或文件尾返回EOF (本质为-1)，所以前面必须用int接收。）
+//宏为了更快，函数更稳定（函数有类型检查）//执行消耗时间和编译消耗时间的区别
+int getchar(void)       // char() is equivalent to getc(stdin) 
+```
+
+```c
+int fputc(int c, FILE *stream);
+int putc(int c, FILE  *stream);
+int putchar(int c);
+```
+
+```c
+#include<stdlib.h>
+#include<stdio.h>
+
+int main(int argc, char *argv[]){
+    FILE *fps, *fpd;
+    // int ch;      
+
+    if(argc < 3){      //第一步判断输入参数个数是否正确     如果不判断，后面fopen可能报错你也摸不着头脑
+        printf("Usage: %s <src_file> <dest_file>\n",argv[0]);
+        exit(1);
+    }
+
+    fps = fopen(argv[1],  "r");   //打开src_file  注意"r"不是" r"   否则执行时错误invalid argument 并且这个错误是在下面的perror下面输出的 
+    //为什么会在下面的perror输出？
+    //首先判断这个字符串是否正确，是程序执行之后才能判断的，所以编译不报错。
+    //在程序执行的时候，fopen的输入参数错误后，会将输入参数错误原因放到errno中，并且fopen返回NULL
+    //程序继续向下执行（注意不会因为这个错误就exit程序），碰到perror后输出的错误将是因为" r"输错而产生的那个错误的记录
+    if(fps == NULL){            //记得判断是否成功，如果不判断会出错，你可能想找错误，但找不到
+        perror("fopen1");
+        exit(1);
+    }
+
+
+    fpd = fopen(argv[2], "w");   //打开dest_file
+    if(fpd == NULL){            //记得判断是否成功，如果不判断会出错，你可能找不到错误，但找不到
+        fclose(fps);       //  防止内存泄漏    但这不是个好方法，日后会学到可以用钩子函数实现
+        perror("fopen2");
+        exit(1);
+    }
+
+    while(1){
+        // char c = fgetc(fps);   //不建议的类型 char  建议用int  请参考man手册
+        int c = fgetc(fps);   //不建议的类型 char  建议用int  请参考man手册   
+        //建议不要在循环的栈上定义变量 容易溢出
+        if(c == EOF){
+            break;
+        }
+        fputc(c, fpd);
+    }
+
+    fclose(fpd);
+    fclose(fps);
+    exit(0);
+
+}
+```
+
+
 
 ## 零碎知识点
 
@@ -286,3 +354,4 @@ fprintf(stderr, "%s", "Stack overflow!"); // Error message on stderr (using fpri
 这条语句会在屏幕上显示"Stack overflow!"这样的错误信息。值得注意的是，与stdout不同，stderr是无缓冲的，意味着其输出会直接显示，不会像stdout那样放在一个buffer里面等待换行时才输出。此外，我们还可以通过代码将stderr重定向到文件或磁盘，或者重写为标准输出设备。
 
 stderr、stdout和stdin这三者都是指向与标准输入流、标准输出流、标准错误流相关联的文件句柄，它们是程序自身的文件句柄，不是普通的文件，而是设备文件。还需要注意的是，尽管默认情况下stdout和stderr的输出都是向屏幕的，但它们也可以被重定向到磁盘文件。例如，可以将标准输出重定向到磁盘文件，然后可以看出stdout和stderr的区别：stdout的输出会被保存到磁盘文件中，而stderr的输出依然在屏幕上。
+

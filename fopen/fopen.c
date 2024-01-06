@@ -10,7 +10,9 @@ int main(void){
 		perror("fopen()");
 		exit(1);
 	}
+	
 	puts("OK!");
+	fclose(fp);    
 	exit(0);
 	errno;
 }
