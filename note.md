@@ -1,3 +1,5 @@
+
+
 # 标准IO 
 
 ## fopen
@@ -309,7 +311,7 @@ int main(int argc, char *argv[]){
         if(c == EOF){
             break;
         }
-        fputc(c, fpd);
+        fputc(c, fpd);      //一般都能够写入成功，所以不会检验最终是否打开成功
     }
 
     fclose(fpd);
@@ -318,6 +320,348 @@ int main(int argc, char *argv[]){
 
 }
 ```
+
+## fgets和fputs    以及    gets和puts
+
+注意这里的f还是指的是file的意思
+
+gets和fgets函数都可以用来读取字符串，但它们在处理输入的方式和安全性上存在显著的区别。首先，gets函数会一直读取输入，直到遇到换行符为止，然后它会丢弃这个换行符并储存其余字符。此外，gets函数在字符末尾添加一个空字符使其成为一个C字符串。然而，由于gets函数不检查输入字符的大小，如果输入的字符大于定义的数组长度，就会导致内存越界，从而可能引发堆栈溢出。
+
+相比之下，fgets函数则更为安全，它可以指定读取的字符个数。具体来说，fgets函数会读取指定数量或指定字节数的字符，或者当遇到换行符时停止读取。与gets函数不同的是，如果fgets函数读到换行符，它会把它存储到字符串中，而不是像gets函数那样丢弃它。因此，fgets函数具有防止缓冲区溢出的特性。
+
+总的来说，由于gets函数存在缓冲区溢出的问题，通常被认为是不安全的，而fgets函数由于其对输入字符个数的严格控制，被广泛认为是一个更安全的选择。
+
+```c
+char *gets(char *str); // 从标准输入 stdin 读取一行，并把它存储在 str 所指向的字符串中。当读取到换行符时，或者到达文件末尾时，它会停止，具体视情况而定。
+// 如果成功，该函数返回 str。如果发生错误或者到达文件末尾时还未读取任何字符，则返回 NULL。
+//--------------------------------------------------------
+int puts(const char *str); // 把一个字符串写入到标准输出 stdout，直到空字符，但不包括空字符。换行符会被追加到输出中。
+// 如果成功，该函数返回一个非负值为字符串长度（包括末尾的 \0），如果发生错误则返回 EOF。
+
+```
+
+```c
+// 从指定的流 stream 读取一行，并把它存储在 str 所指向的字符串内。当读取 (n-1) 个字符时，或者读取到换行符时，或者到达文件末尾时，它会停止，具体视情况而定。
+char *fgets(char *str, int n, FILE *stream); 
+// 如果成功，该函数返回相同的 str 参数。如果到达文件末尾或者没有读取到任何字符，str 的内容保持不变，并返回一个空指针。
+// 如果发生错误，返回一个空指针。
+//--------------------------------------------------------
+//  把字符串写入到指定的流 stream 中，但不包括空字符。
+int fputs(const char *str, FILE *stream);
+// 该函数返回一个非负值，如果发生错误则返回 EOF。
+```
+
+---
+
+fgets读取结束的条件，满足其一即可：
+
+* 读到size-1个字符时停止，size位置存放\0  (这样设计这个函数是因为要get一个string，后面必须用\0结尾)
+* 读到换行符'\n'时停止    
+* 读到文件末尾EOF
+
+```c
+#define SIZE 5
+char buf[SIZE]; // 栈上的动态内存
+fgets(buf, SIZE, stream);
+
+如果stream = "abcde"
+则buf = "abcd\0"(读到size-1后补\0)，文件中的指针指向e（指针永远指向下一个要读的位置）
+
+如果stream = "ab"        //你打开一个文件后，默认就会有一个换行符在那里（如果是输入流(stdin)的话就没有,且输入流不会检测size，溢出了也不会管）
+则buf = "ab\n\0"(读到换行符)，文件指针指向EOF
+
+极端的情况：
+如果stream = "abcd"
+则需要fgets读取两次才能读完
+第一次读取的为"abcd\0"(读到SIZE-1)，指针指向'\n'
+第二次读取的为"\n\0"(读到换行符)，指针指向EOF
+```
+
+```c 
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 1024
+
+int main(int argc, char **argv) {
+
+    FILE *fps, *fpd;
+    char buf[SIZE];
+
+    if(argc < 3) {
+        fprintf(stderr, "Usage:%s <src_file> <dest_file>\n", argv[0]);
+        exit(1);
+    }
+
+    fps = fopen(argv[1], "r");
+    if(fps == NULL) {
+        perror("fopen()");
+        exit(1);
+    }
+
+    fpd = fopen(argv[2], "w");
+    if(fpd == NULL) {
+        fclose(fps);
+        perror("fopen()");
+        exit(1);
+    }
+
+    while(fgets(buf, SIZE, fps) != NULL)
+            fputs(buf, fpd);
+
+    fclose(fpd);
+    fclose(fps);
+
+    exit(0);
+}
+```
+
+## fread和fwrite
+
+fread从给定流 stream 读取数据到 ptr 所指向的数组中。
+
+```c
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
+ptr — 这是指向带有最小尺寸 size*nmemb 字节的内存块的指针。
+size — 这是要读取的每个元素的大小，以字节为单位。
+nmemb — 这是元素的个数，每个元素的大小为 size 字节。
+stream — 这是指向 FILE 对象的指针，该 FILE 对象指定了一个输入流。
+
+成功读取的元素总数会以 size_t 对象返回，size_t 对象是一个整型数据类型。如果总数与 nmemb 参数不同，则可能发生了一个错误或者到达了文件末尾。
+```
+
+fwrite把 ptr 所指向的数组中的数据写入到给定流 stream 中。
+
+```c
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
+ptr — 这是指向要被写入的元素数组的指针。
+size — 这是要被写入的每个元素的大小，以字节为单位。
+nmemb — 这是元素的个数，每个元素的大小为 size 字节。
+stream — 这是指向 FILE 对象的指针，该 FILE 对象指定了一个输出流。
+如果成功，该函数返回一个 size_t 对象，表示元素的总数，该对象是一个整型数据类型。如果该数字与 nmemb 参数不同，则会显示一个错误。
+```
+
+```c
+fread(buf, size, nmemb, fp);
+
+// 情况1：数据量足够
+// 情况2：文件只有5个字节
+
+// 读10个对象，每个对象1个字节
+fread(buf, 1, 10, fp);
+
+// 情况1：
+// 第一次读：返回10（读到10个对象），读到10个字节
+// 情况2：
+// 第一次读：返回5（读到5个对象），读到5个字节
+
+//--------------------------------
+
+// 读1个对象，每个对象10个字节
+fread(buf, 10, 1, fp);
+
+// 情况1：
+// 第一次读：返回1（读到1个对象），也读到10个字节
+// 情况2：
+// 第一次读：返回0（读不到1个对象，因为1个对象要10字节，而文件只有5个字节）
+
+```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#define NNUMB 1024
+
+int main(int argc, char **argv) {
+
+    FILE *fps, *fpd;
+    char buf[NNUMB];
+    int n;
+
+    if(argc < 3) {
+        fprintf(stderr, "Usage:%s <src_file> <dest_file>\n", argv[0]);
+        exit(1);
+    }
+
+    fps = fopen(argv[1], "r");
+    if(fps == NULL) {
+        perror("fopen()");
+        exit(1);
+    }
+    
+    fpd = fopen(argv[2], "w");
+    if(fpd == NULL) {
+        fclose(fps);
+        perror("fopen()");
+        exit(1);
+    }
+	
+    // 如果成功读到n(n>0)个对象，则返回n
+    // 将这n个对象写入流中
+    //注意  这里必须判断读到了多少个块    如果失败或者读到的块的个数小于实际个数，会出问题
+    while((n = fread(buf, 1, NNUMB, fps)) > 0)      // 一次只读一个字节数据   读到了多少个对象就写多少个对象
+            fwrite(buf, 1, n, fpd);    		       						// 一次只写一个字节数据
+    
+    //while(fread(buf, 1, NNUMB, fps))    //错误
+    //   	fwrite(buf, 1, NNUMB, fpd);   
+    
+    
+    fclose(fpd);
+    fclose(fps);
+
+    exit(0);
+}
+```
+
+## fseek 和 ftell
+
+这是两个定义的比较丑的函数
+
+fseek：设置流 stream 的文件位置为给定的偏移 offset，参数 offset 意味着从给定的 whence 位置查找的字节数。
+
+int fseek(FILE *stream, long int offset, int whence)
+
+    stream — 这是指向 FILE 对象的指针，该 FILE 对象标识了流。
+    offset — 这是相对 whence 的偏移量，以字节为单位。
+    whence — 这是表示开始添加偏移 offset 的位置。它一般指定为下列常量之一：
+
+| 常量     | 描述               |
+| -------- | ------------------ |
+| SEEK_SET | 文件的开头         |
+| SEEK_CUR | 文件指针的当前位置 |
+| SEEK_END | 文件的末尾         |
+
+    如果成功，则该函数返回零，否则返回非零值。
+
+ftell：返回给定流 stream 的当前文件位置。
+
+long int ftell(FILE *stream)
+
+```
+stream — 这是指向 FILE 对象的指针，该 FILE 对象标识了流。
+该函数返回位置标识符的当前值。如果发生错误，则返回 -1L，全局变量 errno 被设置为一个正值
+```
+
+---
+
+```c
+int fseek(FILE *stream,  long offset, int whence);
+//offset：需要偏移的字节数，用于设置新的读/写位置；
+//origin：基准点，用来决定从哪个位置开始偏移。
+// 问题在于，long在不同的平台上长度不同  比如在32位机器上是占32位字节。范围是  -2G-2G，一共有4G的寻址范围
+long ftell(FILE *stream);
+//找当前文件的指针在哪，返回当前文件的当前指针指向的位置
+//返回用long 则范围是 -2G-2G  实际上返回的指针的位置不可能是负数，所以实际范围是0-2G  导致了内存的浪费
+```
+
+当fseek和ftell组合使用的时候，fseek的4G 范围将会被浪费掉
+
+这是一个历史遗留问题，并且这个设计是古人的设计思维，没有考虑到现在有很多视频文件远远大于4G 
+
+为了填这个坑用fseeko和ftello代替
+
+---
+
+void rewind(FILE *stream);   让指针回到文件头
+
+---
+
+fseek可以产生空洞文件 ，就是很多\0构成的文件
+
+## fseeko 和 ftello
+
+fseek和ftell中偏移offset的修饰类型是long，因此只能对2G左右大小的文件进行操作，否则会超出long的范围；
+
+fseeko和ftello则将偏移的修饰类型使用typedef定义为offset_t，具体类型交由系统决定，因此不存在文件大小的限制。但是这两个函数不是C标准库函数，而是隶属于POSIX标准（POSIX是标准C库的超集，或者说，C库是普通话，而POSIX是方言）。
+
+## fflush
+
+```c
+#include<stdlib.h>
+#include<stdio.h>
+
+int main(){
+    printf("before while()");    //行缓冲模式，只有碰到\n的时候或者是一行输入满的时候，才会向屏幕输出  
+    // printf("before while()\n");   //加上\n就可以输出了  
+     while(1){}
+    printf("after while()");
+    exit(0);
+}
+```
+
+以上程序会卡在while并且不会输出before
+
+fflush用于将缓冲区的内容刷到屏幕上
+
+```c
+#include<stdlib.h>
+#include<stdio.h>
+
+int main(){
+    printf("before while()");   
+    fflush(stdout);
+     while(1){}
+    printf("after while()");
+    fflush(NULL);   //If the stream argument  is  NULL,  fflush()  flushes  all  open  output streams.
+    exit(0);
+}
+```
+
+缓冲区的作用：大多数情况下是好事，合并系统调用，增加程序的吞吐量。
+
+缓冲的分类：
+
+    行缓冲line buffered：针对标准输出（屏幕等终端设备），有换行刷新，缓冲满刷新，强制刷新(fflush)三种，后两个和全缓冲一致；
+    全缓冲fully buffered：默认缓冲机制（除标准输出【终端设备】，例如重定向到文件），有缓冲满刷新，强制刷新两种，强制刷新例如调用fflush函数，或者进程结束时也会强制刷新；此时换行符仅仅只是个换行符，没有刷新功能；
+    无缓冲unbuffered：例如stderr，需要立即输出，数据会立即读入内存或者输出到外存文件和设备上；
+
+setvbuf：定义流 stream 应如何缓冲。理解即可。
+
+int setvbuf(FILE *stream, char *buffer, int mode, size_t size)
+
+    stream — 这是指向 FILE 对象的指针，该 FILE 对象标识了一个打开的流。
+    buffer — 这是分配给用户的缓冲。如果设置为 NULL，该函数会自动分配一个指定大小的缓冲。
+    mode — 这指定了文件缓冲的模式：
+
+模式 	描述
+_IOFBF 	全缓冲：对于输出，数据在缓冲填满时被一次性写入。对于输入，缓冲会在请求输入且缓冲为空时被填充。
+_IOLBF 	行缓冲：对于输出，数据在遇到换行符或者在缓冲填满时被写入，具体视情况而定。对于输入，缓冲会在请求输入且缓冲为空时被填充，直到遇到下一个换行符。
+_IONBF 	无缓冲：不使用缓冲。每个 I/O 操作都被即时写入。buffer 和 size 参数被忽略。
+
+## getline
+
+封装了malloc  动态扩充内存的一系列步骤。从流中获得一行字符
+
+#define _GNU_SOURCE // 通常将这种宏写在makefile中，现在的编译器没有了该宏，直接使用即可  (声明了是c的GNU标准库)
+#include <stdio.h>
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+
+为什么要用二级指针？是因为C语言在进行函数调用的时候,是将实参的值复制一份,并将其副本传递到函数调用里,如果形定义的不是指针,那么在函数内部改变数值,不会对实参本来的值发生改变。而将形参定义成了指针的话,那么传到函数里面的值虽然是实参地址的一个副本,但是地址里存的值发生了改变,也就导致实参本来的值也发生了改变。有了上述分析的基础上,我们知道,如果要在一个函数内改变一个数的值,那么就需要将形参定义为指针。同样的,如果我们要在一个函数内改变一个指针的值,我们就需要将形参定义了二级指针
+
+```c
+int main(int argc, char **argv) {
+    FILE *fp;
+    // 一定要初始化，否则指针会指向内存中的随机位置
+    char *linebuf = NULL;
+    size_t linesize = 0;
+    if(argc < 2) {
+        fprintf(stderr, "Usage...\n");
+    }
+    fp = fopen(argv[1], "r");
+    if(fp == NULL) {
+        perror("fopen()");
+        exit(1);
+    }
+    while(1) {
+        // 当返回-1时则读完
+    	if(getline(&linebuf, &linesize, fp) < 0)
+            break;
+       	printf("%d\n", strlen(linebuf));   //可以看到linebuf的长度是不断变化的，说明函数内部修改了linebuf
+    }
+    fclose(fp);
+    exit(0);
+}
+```
+
 
 
 
@@ -353,5 +697,29 @@ fprintf(stderr, "%s", "Stack overflow!"); // Error message on stderr (using fpri
 
 这条语句会在屏幕上显示"Stack overflow!"这样的错误信息。值得注意的是，与stdout不同，stderr是无缓冲的，意味着其输出会直接显示，不会像stdout那样放在一个buffer里面等待换行时才输出。此外，我们还可以通过代码将stderr重定向到文件或磁盘，或者重写为标准输出设备。
 
-stderr、stdout和stdin这三者都是指向与标准输入流、标准输出流、标准错误流相关联的文件句柄，它们是程序自身的文件句柄，不是普通的文件，而是设备文件。还需要注意的是，尽管默认情况下stdout和stderr的输出都是向屏幕的，但它们也可以被重定向到磁盘文件。例如，可以将标准输出重定向到磁盘文件，然后可以看出stdout和stderr的区别：stdout的输出会被保存到磁盘文件中，而stderr的输出依然在屏幕上。
+stderr、stdout和stdin这三者都是指向与标准输入流、标准输出流、标准错误流相关联的文件句柄，它们是程序自身的文件句柄，不是普通的文件，而是设备文件。还需要注意的是，尽管默认情况下stdout和stderr的输出都是向屏幕的，但它们也可以被重定向到磁盘文件。例如，可以将标准输出重定向到磁盘文件
+
+### 4. atoi
+
+```c 
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    //-------------ASCII to int ----------------
+    char str[] = "123a456";
+    printf("%d\n", atoi(str));    //atoi 转化到a之前为止
+    //-------------int to ASCII-----------------本身没有这样的函数，但用sprintf可以完全替代
+   	char buf[1024];
+    int year = 2024, month = 1, day = 17;
+    sprintf(buf, "%d-%d-%d", year, month, day);
+    puts(buf);
+    exit(0);
+}
+```
+
+sprintf存在一个问题，就是不知道buf到底有多大，容易溢出；为此引入了snprintf
+
+注意snprintf中的size参数，实际上只能放size-1个用户字符，因为最后一个留给\0
 
