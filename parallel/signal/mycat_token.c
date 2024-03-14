@@ -9,11 +9,14 @@
 
 #define CPS 10   //每秒钟写10个字
 #define BUFSIZE CPS 
+#define BURST 100  //令牌筒大小上限
 
-static volatile int loop = 0;
+static volatile int token = 0;
 static void alrm_handler(int sig) {
     alarm(1);
-    loop = 1;
+    token++;
+    if(token > BURST)
+        token = BURST;
 }
 
 int main(int argc, char **argv) {
@@ -42,10 +45,10 @@ int main(int argc, char **argv) {
 
     while(1) {
 
-        if(!loop){
+        while(token <= 0){
             pause();
         }
-        loop = 0;
+        token--;   //消耗掉一个令牌
 
         while((len = read(sfd, buf, BUFSIZE)) < 0) {  //while有if+重新执行的语义
             if(errno == EINTR)    //所有的系统调用都可能被信号中断而返回EINTR的错误码，此时只是一个假错误，重新执行read一般可以解决
