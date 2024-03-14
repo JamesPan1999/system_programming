@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
+#include "mytbf.h"
+#include <string.h>
 
 #define CPS 10   //每秒钟写10个字
 #define BUFSIZE 1024
@@ -16,16 +18,17 @@ int main(int argc, char **argv) {
     
     int sfd, dfd = 1;
     char buf[BUFSIZE];
-    int len, ret, pos;
+    int len, ret, pos, size;
 
     if(argc < 2) {
         fprintf(stderr, "Usage...\n");
         exit(1);
     }
 
-    tbf = mytbf_init(CPS, BURST);
+    mytbf_t * tbf = mytbf_init(CPS, BURST);
     if(tbf == NULL){
-        
+        fprintf(stderr, "mytbf_init() failed\n");
+        exit(1);
     }
 
     do {
@@ -41,7 +44,10 @@ int main(int argc, char **argv) {
     while(1) {
 
         size = mytbf_fetchtocken(tbf, BUFSIZE);
-
+        if(size < 0){
+            fprintf(stderr, "mytbf_fetchtocken() failed: %s\n", strerror(-size));
+            exit(1);
+        }
         while((len = read(sfd, buf, size)) < 0) {  //while有if+重新执行的语义
             if(errno == EINTR)    //所有的系统调用都可能被信号中断而返回EINTR的错误码，此时只是一个假错误，重新执行read一般可以解决
                 continue;
