@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    mytbf_t * tbf = mytbf_init(CPS, BURST);
+    mytbf_t * tbf = mytbf_init(CPS, BURST);   
     if(tbf == NULL){
         fprintf(stderr, "mytbf_init() failed\n");
         exit(1);
