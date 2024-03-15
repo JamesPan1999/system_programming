@@ -6,18 +6,15 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
+#include <sys/time.h>
 
 #define CPS 10   //每秒钟写10个字
 #define BUFSIZE CPS 
-#define BURST 100  //令牌筒大小上限
 
-// static volatile int token = 0;   //不原子
-static volatile sig_atomic_t token = 0;   //原子
+static volatile sig_atomic_t loop = 0;
 static void alrm_handler(int sig) {
-    alarm(1);
-    token++;
-    if(token > BURST)
-        token = BURST;
+    // alarm(1);
+    loop = 1;
 }
 
 int main(int argc, char **argv) {
@@ -42,15 +39,22 @@ int main(int argc, char **argv) {
     } while(sfd < 0);    //do-while也有if+重新执行的语义
 	
     signal(SIGALRM, alrm_handler);
-    alarm(1);
+    // alarm(1);
+    struct itimerval itv;
+    itv.it_interval.tv_sec = 1;
+    itv.it_interval.tv_usec = 0;
+    itv.it_value.tv_sec = 1;
+    itv.it_value.tv_usec = 0;
+
+    setitimer(ITIMER_REAL, &itv, NULL);
+
 
     while(1) {
 
-        while(token <= 0){ //一个小问题：这句话和下面这句之间来了一个alarm将会丢掉这个，不过因为是令牌同所以下一次来的时候会处理2个token
+        if(!loop){
             pause();
         }
-        token--;   //消耗掉一个令牌
-                   //token--不是由一条机器指令来完成的，不原子，可能会和alrm_handler中的token冲突
+        loop = 0;
 
         while((len = read(sfd, buf, BUFSIZE)) < 0) {  //while有if+重新执行的语义
             if(errno == EINTR)    //所有的系统调用都可能被信号中断而返回EINTR的错误码，此时只是一个假错误，重新执行read一般可以解决

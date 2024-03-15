@@ -6,6 +6,7 @@ int main(){
 
     alarm(10);
     alarm(1);
+    alarm(10);  //alarm永远按照最后一次时间设置来执行
     // pause();
 
     while(1){

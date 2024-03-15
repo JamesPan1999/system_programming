@@ -23,7 +23,7 @@ struct mytbf_st{
     int pos;  //自述下标
 };
 
-static struct mytbf_st* job[MYTBF_MAX];   //全局+静态变量自动初始化为全NULL
+static struct mytbf_st* job[MYTBF_MAX];   //全局+静态变量自动初始化为全NULL  必须注意初始化
 static int inited = 0;
 
 static int get_free_pos(void){
@@ -147,7 +147,7 @@ int mytbf_fetchtocken(mytbf_t * tbf, int size){
         return -EINVAL;  //加-是个技巧
 
     // 当令牌数量不足时，等待。pause和alarm一起用来实现不消耗cpu的阻塞。
-    while(me->token <= 0)
+    while(me->token <= 0)   //必须用while，不能用if 有可能pause好几次token都小于0 （似乎在本程序没有关系，但利用while更保险）
         pause();
 
     int n = min(me->token, size); // 获取尽量多但不超过请求数量的令牌。
@@ -174,8 +174,9 @@ int mytbf_returntoken(mytbf_t * tbf, int size){
     return size;   // 返回添加的令牌数量
 }
 
+//注意这个函数只是卸载一个令牌童
 int mytbf_destroy(mytbf_t * tbf){
-    struct mytbf_st *me = tbf;   //强转
+    struct mytbf_st *me = tbf;   //强转 注意不能tbf->pos因为pbf是void类型
 
     job[me->pos] = NULL;
     free(tbf);
