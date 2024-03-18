@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "bitset": "c",
+        "set": "c",
+        "signal.h": "c",
+        "unistd.h": "c"
+    }
+}
