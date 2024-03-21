@@ -1,12 +1,12 @@
 [
 {
-  "directory": "/home/melodic/James_workspace/parallel/signal/mytbf/build",
-  "command": "/usr/bin/gcc  -I/home/melodic/James_workspace/parallel/signal/mytbf/include -g -o CMakeFiles/mytbf_test.dir/src/mytbf.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c",
-  "file": "/home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c"
+  "directory": "/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build",
+  "command": "/usr/bin/cc  -I/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/include -g -o CMakeFiles/mytbf_test.dir/src/mytbf.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c",
+  "file": "/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c"
 },
 {
-  "directory": "/home/melodic/James_workspace/parallel/signal/mytbf/build",
-  "command": "/usr/bin/gcc  -I/home/melodic/James_workspace/parallel/signal/mytbf/include -g -o CMakeFiles/mytbf_test.dir/src/main.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf/src/main.c",
-  "file": "/home/melodic/James_workspace/parallel/signal/mytbf/src/main.c"
+  "directory": "/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build",
+  "command": "/usr/bin/cc  -I/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/include -g -o CMakeFiles/mytbf_test.dir/src/main.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c",
+  "file": "/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c"
 }
 ]

@@ -1,5 +1,5 @@
 CMakeFiles/mytbf_test.dir/src/mytbf.c.o: \
- /home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c \
+ /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -47,7 +47,7 @@ CMakeFiles/mytbf_test.dir/src/mytbf.c.o: \
  /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
  /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/melodic/James_workspace/parallel/signal/mytbf/include/mytbf.h \
+ /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/include/mytbf.h \
  /usr/include/signal.h /usr/include/x86_64-linux-gnu/bits/signum.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
@@ -70,4 +70,5 @@ CMakeFiles/mytbf_test.dir/src/mytbf.c.o: \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_core.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h

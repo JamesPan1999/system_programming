@@ -95,6 +95,16 @@ static void module_load(void){
     // alrm_handler_save = signal(SIGALRM, alrm_handler);
     // 触发一个1秒后的SIGALRM信号
     // alarm(1);
+
+    struct sigaction sa = {
+        .sa_sigaction = alrm_sigaction,
+        .sa_flags = SA_SIGINFO,
+    };
+    sigemptyset(&sa.sa_mask);
+
+    sigaction(SIGALRM, &sa, &alrm_sigaction_save);
+    //if error
+
     struct itimerval itv = {
         .it_value = {
             .tv_sec = 1,
@@ -105,6 +115,7 @@ static void module_load(void){
             .tv_usec = 0,
         },
     };
+    setitimer(ITIMER_REAL, &itv, NULL);
 
     // 注册模块卸载函数，在程序退出时自动执行
     atexit(module_unload);

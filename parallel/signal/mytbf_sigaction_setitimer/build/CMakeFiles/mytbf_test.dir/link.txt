@@ -1,1 +1,1 @@
-/usr/bin/gcc -g CMakeFiles/mytbf_test.dir/src/mytbf.c.o CMakeFiles/mytbf_test.dir/src/main.c.o -o mytbf_test 
+/usr/bin/cc -g CMakeFiles/mytbf_test.dir/src/mytbf.c.o CMakeFiles/mytbf_test.dir/src/main.c.o -o mytbf_test 

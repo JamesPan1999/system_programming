@@ -1,1 +1,0 @@
-/usr/bin/gcc -g CMakeFiles/MyExecutable.dir/src/mytbf.c.o CMakeFiles/MyExecutable.dir/src/main.c.o -o MyExecutable 

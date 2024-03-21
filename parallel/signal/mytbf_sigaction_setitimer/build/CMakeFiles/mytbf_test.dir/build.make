@@ -53,10 +53,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/melodic/James_workspace/parallel/signal/mytbf
+CMAKE_SOURCE_DIR = /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/melodic/James_workspace/parallel/signal/mytbf/build
+CMAKE_BINARY_DIR = /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/mytbf_test.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/mytbf_test.dir/flags.make
 CMakeFiles/mytbf_test.dir/src/mytbf.c.o: CMakeFiles/mytbf_test.dir/flags.make
 CMakeFiles/mytbf_test.dir/src/mytbf.c.o: ../src/mytbf.c
 CMakeFiles/mytbf_test.dir/src/mytbf.c.o: CMakeFiles/mytbf_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/mytbf_test.dir/src/mytbf.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/mytbf_test.dir/src/mytbf.c.o -MF CMakeFiles/mytbf_test.dir/src/mytbf.c.o.d -o CMakeFiles/mytbf_test.dir/src/mytbf.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/mytbf_test.dir/src/mytbf.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/mytbf_test.dir/src/mytbf.c.o -MF CMakeFiles/mytbf_test.dir/src/mytbf.c.o.d -o CMakeFiles/mytbf_test.dir/src/mytbf.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c
 
 CMakeFiles/mytbf_test.dir/src/mytbf.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/mytbf_test.dir/src/mytbf.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c > CMakeFiles/mytbf_test.dir/src/mytbf.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c > CMakeFiles/mytbf_test.dir/src/mytbf.c.i
 
 CMakeFiles/mytbf_test.dir/src/mytbf.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/mytbf_test.dir/src/mytbf.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/melodic/James_workspace/parallel/signal/mytbf/src/mytbf.c -o CMakeFiles/mytbf_test.dir/src/mytbf.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/mytbf.c -o CMakeFiles/mytbf_test.dir/src/mytbf.c.s
 
 CMakeFiles/mytbf_test.dir/src/main.c.o: CMakeFiles/mytbf_test.dir/flags.make
 CMakeFiles/mytbf_test.dir/src/main.c.o: ../src/main.c
 CMakeFiles/mytbf_test.dir/src/main.c.o: CMakeFiles/mytbf_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/mytbf_test.dir/src/main.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/mytbf_test.dir/src/main.c.o -MF CMakeFiles/mytbf_test.dir/src/main.c.o.d -o CMakeFiles/mytbf_test.dir/src/main.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf/src/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/mytbf_test.dir/src/main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/mytbf_test.dir/src/main.c.o -MF CMakeFiles/mytbf_test.dir/src/main.c.o.d -o CMakeFiles/mytbf_test.dir/src/main.c.o -c /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c
 
 CMakeFiles/mytbf_test.dir/src/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/mytbf_test.dir/src/main.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/melodic/James_workspace/parallel/signal/mytbf/src/main.c > CMakeFiles/mytbf_test.dir/src/main.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c > CMakeFiles/mytbf_test.dir/src/main.c.i
 
 CMakeFiles/mytbf_test.dir/src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/mytbf_test.dir/src/main.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/melodic/James_workspace/parallel/signal/mytbf/src/main.c -o CMakeFiles/mytbf_test.dir/src/main.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c -o CMakeFiles/mytbf_test.dir/src/main.c.s
 
 # Object files for target mytbf_test
 mytbf_test_OBJECTS = \
@@ -109,7 +109,7 @@ mytbf_test: CMakeFiles/mytbf_test.dir/src/mytbf.c.o
 mytbf_test: CMakeFiles/mytbf_test.dir/src/main.c.o
 mytbf_test: CMakeFiles/mytbf_test.dir/build.make
 mytbf_test: CMakeFiles/mytbf_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable mytbf_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable mytbf_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mytbf_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -121,6 +121,6 @@ CMakeFiles/mytbf_test.dir/clean:
 .PHONY : CMakeFiles/mytbf_test.dir/clean
 
 CMakeFiles/mytbf_test.dir/depend:
-	cd /home/melodic/James_workspace/parallel/signal/mytbf/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/melodic/James_workspace/parallel/signal/mytbf /home/melodic/James_workspace/parallel/signal/mytbf /home/melodic/James_workspace/parallel/signal/mytbf/build /home/melodic/James_workspace/parallel/signal/mytbf/build /home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles/mytbf_test.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles/mytbf_test.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/mytbf_test.dir/depend
 

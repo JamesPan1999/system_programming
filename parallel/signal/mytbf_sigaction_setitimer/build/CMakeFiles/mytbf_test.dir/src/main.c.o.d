@@ -1,5 +1,5 @@
 CMakeFiles/mytbf_test.dir/src/main.c.o: \
- /home/melodic/James_workspace/parallel/signal/mytbf/src/main.c \
+ /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/src/main.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -74,7 +74,7 @@ CMakeFiles/mytbf_test.dir/src/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/melodic/James_workspace/parallel/signal/mytbf/include/mytbf.h \
+ /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/include/mytbf.h \
  /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \

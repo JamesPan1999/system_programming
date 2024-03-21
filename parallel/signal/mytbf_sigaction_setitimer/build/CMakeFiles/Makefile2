@@ -54,10 +54,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/melodic/James_workspace/parallel/signal/mytbf
+CMAKE_SOURCE_DIR = /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/melodic/James_workspace/parallel/signal/mytbf/build
+CMAKE_BINARY_DIR = /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/mytbf_test.dir/clean
 CMakeFiles/mytbf_test.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytbf_test.dir/build.make CMakeFiles/mytbf_test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytbf_test.dir/build.make CMakeFiles/mytbf_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles --progress-num=1,2,3 "Built target mytbf_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles --progress-num=1,2,3 "Built target mytbf_test"
 .PHONY : CMakeFiles/mytbf_test.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mytbf_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mytbf_test.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/melodic/James_workspace/parallel/signal/mytbf/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/melodic/James_workspace/parallel/signal/mytbf_sigaction_setitimer/build/CMakeFiles 0
 .PHONY : CMakeFiles/mytbf_test.dir/rule
 
 # Convenience name for target.
