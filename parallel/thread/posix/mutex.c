@@ -8,7 +8,7 @@
 #define BUF_SIZE 1024
 #define THENUM 10
 
-static pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;  //声明时就初始化（相当于调用了pthread_mutex_init
 
 static void *thr_add(void * p){
     FILE *fp;
@@ -26,7 +26,7 @@ static void *thr_add(void * p){
     sleep(1);  //测试
     fprintf(fp, "%d\n", atoi(linebuf) + 1);
     
-    fclose(fp);   //此时才刷新缓冲
+    fclose(fp);   //此时才刷新缓冲  注意缓冲区也要保证互斥
     pthread_mutex_unlock(&mut);
 
     pthread_exit(NULL);
