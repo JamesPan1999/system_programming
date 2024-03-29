@@ -1,0 +1,3 @@
+/home/melodic/James_workspace/parallel/thread/posix/mytbf_sigaction_setitimer/build/CMakeFiles/mytbf_test.dir
+/home/melodic/James_workspace/parallel/thread/posix/mytbf_sigaction_setitimer/build/CMakeFiles/edit_cache.dir
+/home/melodic/James_workspace/parallel/thread/posix/mytbf_sigaction_setitimer/build/CMakeFiles/rebuild_cache.dir
